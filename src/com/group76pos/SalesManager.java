@@ -1,0 +1,38 @@
+package com.group76pos;
+
+import java.util.ArrayList;
+
+public class SalesManager implements IMemento {
+  public static SalesManager instance;
+  ArrayList<Product> products;
+
+  private SalesManager() {}
+
+  public static SalesManager getInstance() {
+    return instance;
+  }
+
+  public void generateReport(int month, ReportGroupBy groupBy) {
+
+  }
+
+  public void addSale(Sale sale) {
+
+  }
+
+  public String issueReceipt() {
+
+  }
+
+  @Override
+  public Memento save() {
+    // TODO: Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void restore(Memento m) {
+    // TODO: Auto-generated method stub
+    
+  }
+}
