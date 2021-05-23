@@ -151,6 +151,8 @@ public class App extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                productFilter = -1;
+                populateProducts();
             }
         });
     }
