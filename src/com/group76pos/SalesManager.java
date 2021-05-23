@@ -29,7 +29,7 @@ public class SalesManager implements IMemento {
     for (Transaction transaction: sale.transactions){
       System.out.println(transaction.product+"           "+transaction.quantity+"    N$"+transaction.amount);
     }
-    System.out.println("*******************************\\nTotal Amount:          N$\"+\"\\n*******************************"+sale.total)
+    System.out.println("*******************************\nTotal Amount:          N$"+"\n*******************************"+sale.total)
     ;
     return "";
   }
