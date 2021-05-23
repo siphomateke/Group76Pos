@@ -1,6 +1,6 @@
-# Group 76 Point of Sale System - NUST PRG611S
+# Group 76 Point of Sale System - NUST PRG620S 
 
-This is a NUST PRG611S project that involved creating a Point of Sale System to transact electronic money between purchasers and dealers.
+This is a NUST PRG620S  project that involved creating a Point of Sale System to transact electronic money between purchasers and dealers.
 
 The system's scope was limited to just Bob card payment processing, transaction management, report generation and stock tracking.
 
