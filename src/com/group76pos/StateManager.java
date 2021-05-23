@@ -2,6 +2,7 @@ package com.group76pos;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 
 public class StateManager {
   public static StateManager instance;
@@ -34,8 +35,9 @@ public class StateManager {
       SalesManager.getInstance().restore(Memento.loadFromFile(salesManagerPath));
       StockManager.getInstance().restore(Memento.loadFromFile(stockManagerPath));
       BankAccountManager.getInstance().restore(Memento.loadFromFile(bankAccountManager));
-    } catch (IOException e) {
+    } catch (NoSuchFileException e) {
       // If the files don't exist, no need to restore them.
+    } catch (IOException e) {
       JOptionPane.showMessageDialog(null, e.toString(), "Error loading application", JOptionPane.ERROR_MESSAGE);
     }
   }
