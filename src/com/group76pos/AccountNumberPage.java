@@ -20,7 +20,7 @@ public class AccountNumberPage {
 
                 BankAccount account = BankAccountManager.getInstance().getBankAccount(accountNumber);
                 if (account == null) {
-                    JOptionPane.showMessageDialog(null, String.format("Bank account %s does not exist", accountNumber));
+                    JOptionPane.showMessageDialog(null, String.format("Bank account %s does not exist", accountNumber), "Invalid bank account", JOptionPane.ERROR_MESSAGE);
                 } else {
                     SalesManager.getInstance().setAccountNumber(accountNumber);
                     accNumTextField.setText("");

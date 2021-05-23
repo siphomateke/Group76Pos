@@ -96,7 +96,6 @@ public class App extends JFrame {
                             String text = quantityField.getText();
                             if (text.length() > 0) {
                                 int quantity = Integer.parseInt(text);
-                                System.out.println("Quantity: "+quantity);
                                 if (quantity <= 0) {
                                     JOptionPane.showMessageDialog(null,
                                             "Error: Please enter number bigger than 0", "Error Message",
@@ -174,7 +173,8 @@ public class App extends JFrame {
         this.setContentPane(cardPanel);
         this.pack();
 
-        // FIXME: Load from disk before doing anything
+        // Load the application's state such as past sales before doing anything.
+        StateManager.getInstance().load();
 
         this.clearSale();
         cartPanel.setLayout(new BoxLayout(cartPanel, BoxLayout.PAGE_AXIS));
@@ -184,7 +184,6 @@ public class App extends JFrame {
             public void mouseClicked(MouseEvent evt) {
                 JList list = (JList) evt.getSource();
                 Product selectedProduct = (Product) list.getSelectedValue();
-                System.out.println(selectedProduct);
                 addToCart(selectedProduct);
             }
         });

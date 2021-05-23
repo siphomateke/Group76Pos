@@ -20,7 +20,7 @@ public class Memento {
   }
 
   public static Memento loadFromFile(String path) throws IOException {
-    String state = new String(Files.readAllBytes(Paths.get("file")), StandardCharsets.UTF_8);
+    String state = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
     return new Memento(state);
   }
 }

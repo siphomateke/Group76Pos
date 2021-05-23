@@ -68,11 +68,11 @@ public class SalesManager implements IMemento {
             // Finally, store the successful sale for historical purposes
             this.addSale(activeSale);
 
-            JOptionPane.showMessageDialog(null, "Success! Transaction approved");
+            JOptionPane.showMessageDialog(null, "Success! Transaction approved", "Checkout", JOptionPane.INFORMATION_MESSAGE);
             App.getInstance().clearSale();
             App.showPage("dashboard");
 
-            JOptionPane.showMessageDialog(null, SalesManager.getInstance().issueReceipt(activeSale));
+            JOptionPane.showMessageDialog(null, SalesManager.getInstance().issueReceipt(activeSale), "Receipt", JOptionPane.INFORMATION_MESSAGE);
 
             StateManager.getInstance().save();
           } else {
@@ -85,7 +85,7 @@ public class SalesManager implements IMemento {
         throw new Exception(String.format("Bank Account %s not found", customerAccountNumber));
       }
     } catch (Exception e) {
-      JOptionPane.showMessageDialog(null, e.toString());
+      JOptionPane.showMessageDialog(null, e.toString(), "Checkout error", JOptionPane.ERROR_MESSAGE);
     }
   }
 
@@ -134,10 +134,10 @@ public class SalesManager implements IMemento {
   }
 
   private class SavedSale extends Sale {
-    ArrayList<SavedTransaction> transactions;
+    ArrayList<SavedTransaction> transactionsWithIds;
 
     SavedSale(ArrayList<SavedTransaction> transactions, double total, Date timeCompleted) {
-      this.transactions = transactions;
+      this.transactionsWithIds = transactions;
       this.total = total;
       this.timeCompleted = timeCompleted;
     }
@@ -172,7 +172,7 @@ public class SalesManager implements IMemento {
     ArrayList<Sale> sales = new ArrayList<>();
     for (SavedSale s: restored) {
       ArrayList<Transaction> transactions = new ArrayList<>();
-      for (SavedTransaction t: s.transactions) {
+      for (SavedTransaction t: s.transactionsWithIds) {
 
         // Find product from ID
         Product product = null;

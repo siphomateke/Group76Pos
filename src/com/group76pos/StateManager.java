@@ -1,5 +1,6 @@
 package com.group76pos;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class StateManager {
@@ -35,6 +36,7 @@ public class StateManager {
       BankAccountManager.getInstance().restore(Memento.loadFromFile(bankAccountManager));
     } catch (IOException e) {
       // If the files don't exist, no need to restore them.
+      JOptionPane.showMessageDialog(null, e.toString(), "Error loading application", JOptionPane.ERROR_MESSAGE);
     }
   }
 }
