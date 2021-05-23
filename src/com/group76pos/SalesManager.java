@@ -2,6 +2,7 @@ package com.group76pos;
 
 import com.google.gson.Gson;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -23,8 +24,13 @@ public class SalesManager implements IMemento {
     this.sales.add(sale);
   }
 
-  public String issueReceipt() {
-    // TODO: Implement
+  public String issueReceipt(Sale sale) {
+    System.out.println("*******************************\n      Group76 POS Systems\n*******************************\nProducts      Quantity   Amount"+"\n-------------------------------");
+    for (Transaction transaction: sale.transactions){
+      System.out.println(transaction.product+"           "+transaction.quantity+"    N$"+transaction.amount);
+    }
+    System.out.println("*******************************\\nTotal Amount:          N$\"+\"\\n*******************************"+sale.total)
+    ;
     return "";
   }
 
