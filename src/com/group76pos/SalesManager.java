@@ -2,7 +2,6 @@ package com.group76pos;
 
 import com.google.gson.Gson;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -30,13 +29,33 @@ public class SalesManager implements IMemento {
   }
 
   public String issueReceipt(Sale sale) {
-    System.out.println("*******************************\n      Group76 POS Systems\n*******************************\nProducts      Quantity   Amount"+"\n-------------------------------");
-    for (Transaction transaction: sale.transactions){
-      System.out.println(transaction.product+"\t\t\t"+transaction.quantity+"\t\tN$"+transaction.amount);
+    String output = "\n*************************************************\n             Group76 POS Systems";
+    int maxNameLength = 0;
+    int maxQuantityLength = 0;
+    int maxAmountLength = 0;
+    for (Transaction transaction: sale.transactions) {
+      if (transaction.product.toString().length() > maxNameLength) {
+        maxNameLength = transaction.product.toString().length();
+      }
+      String quantity =Integer.toString(transaction.quantity);
+      if (quantity.length() > maxQuantityLength) {
+        maxQuantityLength = quantity.length();
+      }
+      String amount = Double.toString(transaction.amount);
+      if (amount.length() > maxAmountLength) {
+        maxAmountLength = amount.length();
+      }
     }
-    System.out.println("*******************************\nTotal Amount:          N$"+sale.total+"\n*******************************")
-    ;
-    return "";
+    String columnFormat = "\n%-"+(maxNameLength+3)+"s %-"+(maxQuantityLength+8)+"s %-"+(maxAmountLength+5)+"s";
+    output += "\n*************************************************";
+    output += String.format(columnFormat, "Products", "Quantity", "Amount");
+    output += "\n-------------------------------------------------";
+    for (Transaction transaction: sale.transactions){
+      output += String.format(columnFormat, transaction.product, transaction.quantity, "N$"+transaction.amount);
+    }
+    output += String.format("\n*************************************************\nTotal Amount:                N$"+sale.total+"\n");
+    output += "*************************************************";
+    return output;
   }
 
   private class SavedTransaction extends Transaction {
