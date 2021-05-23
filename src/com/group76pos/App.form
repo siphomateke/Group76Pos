@@ -16,7 +16,9 @@
         <constraints>
           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties/>
+        <properties>
+          <background color="-16777216"/>
+        </properties>
         <border type="none"/>
         <children>
           <grid id="30423" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -60,6 +62,7 @@
                               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
+                              <font name="Verdana" size="17" style="1"/>
                               <text value="Total:"/>
                             </properties>
                           </component>
@@ -68,6 +71,7 @@
                               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
+                              <font name="Verdana" size="17" style="1"/>
                               <text value="N$ ????"/>
                             </properties>
                           </component>
@@ -75,17 +79,19 @@
                       </grid>
                       <component id="bd05b" class="javax.swing.JButton" binding="cancelButton" default-binding="true">
                         <constraints>
-                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
+                          <font name="Verdana" size="20" style="1"/>
                           <text value="Cancel"/>
                         </properties>
                       </component>
                       <component id="c28fe" class="javax.swing.JButton" binding="checkoutButton" default-binding="true">
                         <constraints>
-                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
+                          <font name="Verdana" size="20" style="1"/>
                           <text value="Checkout"/>
                         </properties>
                       </component>
@@ -121,25 +127,28 @@
                 <children>
                   <component id="ff096" class="javax.swing.JButton" binding="burgersButton" default-binding="true">
                     <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
+                      <font name="Verdana" size="20" style="1"/>
                       <text value="Burgers"/>
                     </properties>
                   </component>
                   <component id="ccd8a" class="javax.swing.JButton" binding="friesButton" default-binding="true">
                     <constraints>
-                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
+                      <font name="Verdana" size="20" style="1"/>
                       <text value="Fries"/>
                     </properties>
                   </component>
                   <component id="d8a7e" class="javax.swing.JButton" binding="drinksButton" default-binding="true">
                     <constraints>
-                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
+                      <font name="Verdana" size="20" style="1"/>
                       <text value="Drinks"/>
                     </properties>
                   </component>
@@ -160,9 +169,10 @@
                 <children>
                   <component id="a63e3" class="javax.swing.JLabel">
                     <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
+                      <font name="Verdana" size="20" style="1"/>
                       <text value="Cart"/>
                     </properties>
                   </component>
@@ -178,9 +188,11 @@
                 <children>
                   <component id="483f1" class="javax.swing.JButton" binding="reportsButton" default-binding="true">
                     <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
+                      <font name="Verdana" size="18" style="1"/>
+                      <horizontalTextPosition value="0"/>
                       <text value="Reports"/>
                     </properties>
                   </component>
@@ -198,7 +210,16 @@
                 </constraints>
                 <properties/>
                 <border type="none"/>
-                <children/>
+                <children>
+                  <component id="c5aee" class="javax.swing.JList" binding="foodList">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                        <preferred-size width="150" height="50"/>
+                      </grid>
+                    </constraints>
+                    <properties/>
+                  </component>
+                </children>
               </grid>
             </children>
           </grid>
