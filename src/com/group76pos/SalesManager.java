@@ -27,9 +27,9 @@ public class SalesManager implements IMemento {
   public String issueReceipt(Sale sale) {
     System.out.println("*******************************\n      Group76 POS Systems\n*******************************\nProducts      Quantity   Amount"+"\n-------------------------------");
     for (Transaction transaction: sale.transactions){
-      System.out.println(transaction.product+"           "+transaction.quantity+"    N$"+transaction.amount);
+      System.out.println(transaction.product+"\t\t\t"+transaction.quantity+"\t\tN$"+transaction.amount);
     }
-    System.out.println("*******************************\nTotal Amount:          N$"+"\n*******************************"+sale.total)
+    System.out.println("*******************************\nTotal Amount:          N$"+sale.total+"\n*******************************")
     ;
     return "";
   }
