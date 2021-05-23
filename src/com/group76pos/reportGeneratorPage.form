@@ -71,6 +71,7 @@
                       <background color="-1"/>
                       <font name="Verdana" size="28" style="1"/>
                       <foreground color="-4289857"/>
+                      <inheritsPopupMenu value="false"/>
                       <text value="Generate Report"/>
                     </properties>
                   </component>
@@ -212,4 +213,12 @@
       </hspacer>
     </children>
   </grid>
+  <buttonGroups>
+    <group name="buttonGroup1">
+      <member id="e1254"/>
+      <member id="c64d7"/>
+      <member id="ed741"/>
+      <member id="5acdc"/>
+    </group>
+  </buttonGroups>
 </form>
