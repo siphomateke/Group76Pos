@@ -35,7 +35,9 @@ public class App extends JFrame {
     private JPanel cartPanel;
 
     private int productFilter = -1;
-    private Sale activeSale;
+    public static Sale activeSale;
+    private static JPanel cardPanel;
+    private static CardLayout cardLayout;
 
     private void populateProducts() {
         DefaultListModel foodListModel = new DefaultListModel();
@@ -152,7 +154,16 @@ public class App extends JFrame {
     public App(String title) {
         super(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setContentPane(mainPanel);
+
+        cardPanel = new JPanel();
+        cardLayout = new CardLayout();
+        cardPanel.setLayout(cardLayout);
+        cardPanel.add(mainPanel);
+        cardPanel.add("accountNumber", new AccountNumberPage().mainPanel);
+        cardPanel.add("pinNumber", new PinNumberPage().mainPanel);
+        cardPanel.add("reportGenerator", new ReportGeneratorPage().mainPanel);
+
+        this.setContentPane(cardPanel);
         this.pack();
 
         // FIXME: Load from disk before doing anything
@@ -201,17 +212,13 @@ public class App extends JFrame {
         checkoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    activeSale.checkout();
-                } catch (Exception exception) {
-                    JOptionPane.showMessageDialog(null, exception.toString());
-                }
+                activeSale.checkout();
             }
         });
         reportsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                activeSale.cancel();
+                showPage("reportGenerator");
             }
         });
         menuButton.addActionListener(new ActionListener() {
@@ -221,6 +228,10 @@ public class App extends JFrame {
                 populateProducts();
             }
         });
+    }
+
+    public static void showPage(String name) {
+        cardLayout.show(cardPanel, name);
     }
 
     public static void main(String[] args) {

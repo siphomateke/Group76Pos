@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class reportGeneratorPage {
-    private JPanel mainPanel;
+public class ReportGeneratorPage {
+    public JPanel mainPanel;
     private JPanel panelTwo;
     private JRadioButton byItemsRadioButton;
     private JRadioButton byCustomersRadioButton;
@@ -13,7 +13,7 @@ public class reportGeneratorPage {
     private JRadioButton byMonthRadioButton;
     private JButton generateReportButton;
 
-    public reportGeneratorPage() {
+    public ReportGeneratorPage() {
         generateReportButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

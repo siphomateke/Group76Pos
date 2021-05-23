@@ -2,12 +2,17 @@ package com.group76pos;
 
 import com.google.gson.Gson;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class SalesManager implements IMemento {
   public static SalesManager instance;
   ArrayList<Sale> sales;
+
+  private Sale activeSale;
+  private String customerAccountNumber;
+  private short customerPin;
 
   private SalesManager() {
     this.sales = new ArrayList<>();
@@ -26,6 +31,59 @@ public class SalesManager implements IMemento {
 
   public void addSale(Sale sale) {
     this.sales.add(sale);
+  }
+
+  private void getAccountNumber() {
+    App.showPage("accountNumber");
+  }
+
+  public void setAccountNumber(String accountNumber) {
+    this.customerAccountNumber = accountNumber;
+    App.showPage("pinNumber");
+  }
+
+  public void setAccountPin(short pin) {
+    customerPin = pin;
+    finishCheckout();
+  }
+
+  public void finishCheckout() {
+    try {
+      // Make sure the customer's PIN is valid
+      BankAccount account = BankAccountManager.getInstance().getBankAccount(customerAccountNumber);
+      if (account != null) {
+        boolean validPin = account.verifyPin(customerPin);
+        if (validPin) {
+          // Make sure they have a sufficient balance
+          if (account.balance >= activeSale.total) {
+            // Checkout has been approved
+            activeSale.timeCompleted = new Date(System.currentTimeMillis());
+
+            // Reduce stock count of all products involved transaction by 1
+            for (Transaction t : activeSale.transactions) {
+              Product p = t.product;
+              p.updateStock(p.stockQuantity - 1);
+            }
+
+            // Finally, store the successful sale for historical purposes
+            this.addSale(activeSale);
+          } else {
+            throw new Exception("Insufficient funds");
+          }
+        } else {
+          throw new Exception("Invalid PIN");
+        }
+      } else {
+        throw new Exception(String.format("Bank Account %s not found", customerAccountNumber));
+      }
+    } catch (Exception e) {
+      JOptionPane.showMessageDialog(null, e.toString());
+    }
+  }
+
+  public void checkout(Sale sale) {
+    this.activeSale = sale;
+    this.getAccountNumber();
   }
 
   public String issueReceipt(Sale sale) {
