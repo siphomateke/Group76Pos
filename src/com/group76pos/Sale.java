@@ -34,26 +34,30 @@ public class Sale {
 
     // Make sure the customer's PIN is valid
     BankAccount account = BankAccountManager.getInstance().getBankAccount(customerAccountNumber);
-    boolean validPin = account.verifyPin(customerPin);
-    if (validPin) {
-      // Make sure they have a sufficient balance
-      if (account.balance >= this.total) {
-        // Checkout has been approved
-        this.timeCompleted = new Date(System.currentTimeMillis());
+    if (account != null) {
+      boolean validPin = account.verifyPin(customerPin);
+      if (validPin) {
+        // Make sure they have a sufficient balance
+        if (account.balance >= this.total) {
+          // Checkout has been approved
+          this.timeCompleted = new Date(System.currentTimeMillis());
 
-        // Reduce stock count of all products involved transaction by 1
-        for (Transaction t: transactions) {
-          Product p = t.product;
-          p.updateStock(p.stockQuantity - 1);
+          // Reduce stock count of all products involved transaction by 1
+          for (Transaction t : transactions) {
+            Product p = t.product;
+            p.updateStock(p.stockQuantity - 1);
+          }
+
+          // Finally, store the successful sale for historical purposes
+          SalesManager.getInstance().addSale(this);
+        } else {
+          throw new Exception("Insufficient funds");
         }
-
-        // Finally, store the successful sale for historical purposes
-        SalesManager.getInstance().addSale(this);
       } else {
-        throw new Exception("Insufficient funds");
+        throw new Exception("Invalid PIN");
       }
     } else {
-      throw new Exception("Invalid PIN");
+      throw new Exception(String.format("Bank Account %s not found", customerAccountNumber));
     }
   }
 

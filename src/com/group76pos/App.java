@@ -133,12 +133,18 @@ public class App extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                try {
+                    activeSale.checkout();
+                } catch (Exception exception) {
+                    JOptionPane.showMessageDialog(null, exception.toString());
+                }
             }
         });
         reportsButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                activeSale.cancel();
             }
         });
         menuButton.addMouseListener(new MouseAdapter() {
