@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="PointOfSaleSystem:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/PointOfSaleSystem_jar</output-path>
+    <root id="archive" name="PointOfSaleSystem.jar">
+      <element id="module-output" name="PointOfSaleSystem" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.8.6/gson-2.8.6.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
