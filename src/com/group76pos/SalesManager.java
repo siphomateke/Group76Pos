@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 
@@ -54,56 +55,69 @@ public class SalesManager implements IMemento {
 
   public void generateReport(int month, ReportGroupBy groupBy) {
     try {
-      // FIXME: Filter by month
+      ArrayList<ReportRow> reportRows = new ArrayList<>();
+      String reportName;
+      if (groupBy != null) {
+        switch (groupBy) {
+          case Product: {
+            for (Sale s : this.sales) {
+              for (Transaction t : s.transactions) {
+                reportRows.add(new ReportRow(s.customer, t));
+              }
+            }
+            reportRows.sort(Comparator.comparingInt(r -> r.transaction.product.id));
+            break;
+          }
+          case Customer: {
+            ArrayList<Sale> sortedSales = new ArrayList<>(this.sales);
+            sortedSales.sort(Comparator.comparing(s -> s.customer.name));
+            for (Sale s : sortedSales) {
+              for (Transaction t : s.transactions) {
+                reportRows.add(new ReportRow(s.customer, t));
+              }
+            }
+            break;
+          }
+          case Transfer: {
+            // group transactions by sales
+            for (Sale s : this.sales) {
+              for (Transaction t : s.transactions) {
+                reportRows.add(new ReportRow(s.customer, t));
+              }
+            }
+            break;
+          }
+        }
+        reportName = groupBy.toString();
+      } else {
+        reportName = "All";
+        // group by date
+        for (Sale s : this.sales) {
+          for (Transaction t : s.transactions) {
+            reportRows.add(new ReportRow(s.customer, t));
+          }
+        }
+        reportRows.sort(Comparator.comparing(r -> r.transaction.time));
+      }
 
-      String path = "Report-" + groupBy.toString() + ".csv";
-      ArrayList<ReportRow> reportRow = new ArrayList<>();
-      switch (groupBy) {
-        case Product: {
-          for (Sale s : this.sales) {
-            for (Transaction t : s.transactions) {
-              reportRow.add(new ReportRow(s.customer, t));
-            }
-          }
-          reportRow.sort(Comparator.comparingInt(r -> r.transaction.product.id));
-          break;
+      String path = "Report-" + reportName + ".csv";
+
+      // Filter report rows by current month
+      ArrayList<ReportRow> filteredRows = new ArrayList<>();
+      for (ReportRow r: reportRows) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(r.transaction.time);
+        int transactionMonth = cal.get(Calendar.MONTH);
+        if (transactionMonth == month) {
+          filteredRows.add(r);
         }
-        case Customer: {
-          ArrayList<Sale> sortedSales = new ArrayList<>(this.sales);
-          // FIXME: Make sure this works
-          sortedSales.sort(Comparator.comparing(s -> s.customer.name));
-          for (Sale s : sortedSales) {
-            for (Transaction t : s.transactions) {
-              reportRow.add(new ReportRow(s.customer, t));
-            }
-          }
-          break;
-        }
-        case Transfer: {
-          // group transactions by sales
-          for (Sale s : this.sales) {
-            for (Transaction t : s.transactions) {
-              reportRow.add(new ReportRow(s.customer, t));
-            }
-          }
-          break;
-        }
-        default:
-          // group by date
-          for (Sale s : this.sales) {
-            for (Transaction t : s.transactions) {
-              reportRow.add(new ReportRow(s.customer, t));
-            }
-          }
-          reportRow.sort(Comparator.comparing(r -> r.transaction.time));
-          break;
       }
 
       String headerRow = String.join(",", new String[]{
-              "Customer", "Product", "Price", "Quantity", "Total", "Time"
+        "Customer", "Product", "Price", "Quantity", "Total", "Time"
       });
       String csvString = headerRow;
-      for (ReportRow r : reportRow) {
+      for (ReportRow r : filteredRows) {
         csvString += "\n" + r.toString();
       }
       try {

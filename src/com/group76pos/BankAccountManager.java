@@ -40,7 +40,6 @@ public class BankAccountManager implements IMemento {
   @Override
   public Memento save() {
     Gson gson = new Gson();
-    // TODO: Properly save bank accounts
     String jsonString = gson.toJson(this.bankAccounts);
     return new Memento(jsonString);
   }
