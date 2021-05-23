@@ -1,9 +1,8 @@
 package com.group76pos;
 
-import java.lang.reflect.Member;
-import com.google.gson.Gson;
+import java.io.IOException;
 
-public class StateManager implements IMemento {
+public class StateManager {
   public static StateManager instance;
   static String salesManagerPath = "salesManagerPath.json";
   static String stockManagerPath = "stockManagerPath.json";
@@ -16,14 +15,23 @@ public class StateManager implements IMemento {
   }
 
   public void save() {
-    SalesManager.getInstance().save().saveToFile(salesManagerPath);
-    StockManager.getInstance().save().saveToFile(stockManagerPath);
-    BankAccountManager.getInstance().save().saveToFile(bankAccountManager);
+    try {
+      SalesManager.getInstance().save().saveToFile(salesManagerPath);
+      StockManager.getInstance().save().saveToFile(stockManagerPath);
+      BankAccountManager.getInstance().save().saveToFile(bankAccountManager);
+    } catch (IOException e) {
+      // TODO: Properly handle errors saving files and show error message
+      e.printStackTrace();
+    }
   }
 
   public void load() {
-    SalesManager.getInstance().restore(new Memento().loadFromFile(salesManagerPath));
-    StockManager.getInstance().restore(new Memento().loadFromFile(stockManagerPath));
-    BankAccountManager.getInstance().restore(new Memento().loadFromFile(bankAccountManager));
+    try {
+      SalesManager.getInstance().restore(Memento.loadFromFile(salesManagerPath));
+      StockManager.getInstance().restore(Memento.loadFromFile(stockManagerPath));
+      BankAccountManager.getInstance().restore(Memento.loadFromFile(bankAccountManager));
+    } catch (IOException e) {
+      // If the files don't exist, no need to restore them.
+    }
   }
 }

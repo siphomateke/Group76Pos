@@ -32,8 +32,6 @@ public class BankAccountManager implements IMemento {
 
   @Override
   public void restore(Memento m) {
-    Gson gson = new Gson();
-    String jsonString = gson.toJson(this);
-    return new Memento(jsonString); 
+    // TODO: Implement
   }
 }
