@@ -25,8 +25,7 @@ public class StateManager {
       StockManager.getInstance().save().saveToFile(stockManagerPath);
       BankAccountManager.getInstance().save().saveToFile(bankAccountManager);
     } catch (IOException e) {
-      // TODO: Properly handle errors saving files and show error message
-      e.printStackTrace();
+      JOptionPane.showMessageDialog(null, e.toString(), "Error saving application state", JOptionPane.ERROR_MESSAGE);
     }
   }
 
