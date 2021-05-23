@@ -45,6 +45,9 @@ public class App extends JFrame {
             }
             listOrder.setModel(listOrderModel);
         }
+
+        // FIXME: Remove test receipt printing
+        System.out.println(SalesManager.getInstance().issueReceipt(activeSale));
     }
 
     private void addToCart(Product product) {
