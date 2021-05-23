@@ -10,4 +10,5 @@ public class reportGeneratorPage {
     private JRadioButton byTransfersRadioButton;
     private JRadioButton byMonthRadioButton;
     private JButton generateReportButton;
+
 }
