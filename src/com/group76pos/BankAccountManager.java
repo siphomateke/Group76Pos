@@ -11,13 +11,14 @@ public class BankAccountManager implements IMemento {
   ArrayList<BankAccount> bankAccounts;
 
   private BankAccountManager() {
-    this.bankAccounts = new ArrayList<>();
     Customer c1 = new Customer("Justin Brandt", "0812345678", "justinb@email.com");
     Customer c2 = new Customer("Craig Van Niekerk", "08198765432", "craig123@email.com");
     Customer c3 = new Customer("Sipho Mateke", "0818527419", "siphom987@email.com");
-    new BankAccount(c1, "220040869", 10000, 2001);
-    new BankAccount(c2, "219002444", 60, 2000);
-    new BankAccount(c3, "220101361", 800, 2000);
+    this.bankAccounts = new ArrayList<>(Arrays.asList(
+      new BankAccount(c1, "220040869", 10000, (short) 2001),
+      new BankAccount(c2, "219002444", 60, (short) 2000),
+      new BankAccount(c3, "220101361", 800, (short) 2000)
+    ));
   }
 
   public static BankAccountManager getInstance() {
@@ -29,7 +30,7 @@ public class BankAccountManager implements IMemento {
 
   public BankAccount getBankAccount(String accountNumber) {
     for (BankAccount account: this.bankAccounts) {
-      if (account.accountNumber == accountNumber) {
+      if (account.accountNumber.equals(accountNumber)) {
         return account;
       }
     }

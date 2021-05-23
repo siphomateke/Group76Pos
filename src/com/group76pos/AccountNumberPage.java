@@ -17,7 +17,14 @@ public class AccountNumberPage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String accountNumber = accNumTextField.getText();
-                SalesManager.getInstance().setAccountNumber(accountNumber);
+
+                BankAccount account = BankAccountManager.getInstance().getBankAccount(accountNumber);
+                if (account == null) {
+                    JOptionPane.showMessageDialog(null, String.format("Bank account %s does not exist", accountNumber));
+                } else {
+                    SalesManager.getInstance().setAccountNumber(accountNumber);
+                    accNumTextField.setText("");
+                }
             }
         });
     }

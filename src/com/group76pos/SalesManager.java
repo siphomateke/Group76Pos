@@ -67,6 +67,14 @@ public class SalesManager implements IMemento {
 
             // Finally, store the successful sale for historical purposes
             this.addSale(activeSale);
+
+            JOptionPane.showMessageDialog(null, "Success! Transaction approved");
+            App.getInstance().clearSale();
+            App.showPage("dashboard");
+
+            JOptionPane.showMessageDialog(null, SalesManager.getInstance().issueReceipt(activeSale));
+
+            StateManager.getInstance().save();
           } else {
             throw new Exception("Insufficient funds");
           }

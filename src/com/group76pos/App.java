@@ -11,6 +11,8 @@ import java.awt.event.MouseEvent;
 import java.util.Date;
 
 public class App extends JFrame {
+    private static App instance;
+
     private JPanel mainPanel;
 
     // the food buttons
@@ -35,7 +37,7 @@ public class App extends JFrame {
     private JPanel cartPanel;
 
     private int productFilter = -1;
-    public static Sale activeSale;
+    public Sale activeSale;
     private static JPanel cardPanel;
     private static CardLayout cardLayout;
 
@@ -128,9 +130,6 @@ public class App extends JFrame {
         cartPanel.revalidate();
         cartPanel.repaint();
         this.updateTotal();
-
-        // FIXME: Remove test receipt printing
-        System.out.println(SalesManager.getInstance().issueReceipt(activeSale));
     }
 
     private void addToCart(Product product) {
@@ -151,6 +150,15 @@ public class App extends JFrame {
         this.updateCart();
     }
 
+    public void clearSale() {
+        activeSale = new Sale();
+        updateCart();
+    }
+
+    public static App getInstance() {
+        return instance;
+    }
+
     public App(String title) {
         super(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -158,7 +166,7 @@ public class App extends JFrame {
         cardPanel = new JPanel();
         cardLayout = new CardLayout();
         cardPanel.setLayout(cardLayout);
-        cardPanel.add(mainPanel);
+        cardPanel.add("dashboard", mainPanel);
         cardPanel.add("accountNumber", new AccountNumberPage().mainPanel);
         cardPanel.add("pinNumber", new PinNumberPage().mainPanel);
         cardPanel.add("reportGenerator", new ReportGeneratorPage().mainPanel);
@@ -168,7 +176,7 @@ public class App extends JFrame {
 
         // FIXME: Load from disk before doing anything
 
-        activeSale = new Sale();
+        this.clearSale();
         cartPanel.setLayout(new BoxLayout(cartPanel, BoxLayout.PAGE_AXIS));
         this.populateProducts();
 
@@ -235,7 +243,8 @@ public class App extends JFrame {
     }
 
     public static void main(String[] args) {
-        JFrame Frame = new App("Group76 POS");
-        Frame.setVisible(true);
+        App app = new App("Group76 POS");
+        app.setVisible(true);
+        App.instance = app;
     }
 }

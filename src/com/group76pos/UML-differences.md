@@ -12,3 +12,9 @@
 
 ## Transaction
 - toString
+
+## Sale
+- move bulk checkout logic to SalesManager
+
+## SalesManager
+- checkout and other related methods

@@ -18,6 +18,7 @@ public class PinNumberPage {
             public void actionPerformed(ActionEvent e) {
                 String pin = pinNumTextField.getText();
                 SalesManager.getInstance().setAccountPin(Short.parseShort(pin));
+                pinNumTextField.setText("");
             }
         });
     }
