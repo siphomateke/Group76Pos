@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class SalesManager implements IMemento {
   public static SalesManager instance;
-  ArrayList<Product> products;
+  ArrayList<Sale> sales;
 
   private SalesManager() {}
 
@@ -13,15 +13,16 @@ public class SalesManager implements IMemento {
   }
 
   public void generateReport(int month, ReportGroupBy groupBy) {
-
+    // TODO: Implement
   }
 
   public void addSale(Sale sale) {
-
+    this.sales.add(sale);
   }
 
   public String issueReceipt() {
-
+    // TODO: Implement
+    return "";
   }
 
   @Override

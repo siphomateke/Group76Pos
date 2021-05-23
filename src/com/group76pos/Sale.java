@@ -46,6 +46,9 @@ public class Sale {
           Product p = t.product;
           p.updateStock(p.stockQuantity - 1);
         }
+
+        // Finally, store the successful sale for historical purposes
+        SalesManager.getInstance().addSale(this);
       } else {
         throw new Exception("Insufficient funds");
       }
