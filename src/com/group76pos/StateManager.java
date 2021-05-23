@@ -11,6 +11,9 @@ public class StateManager {
   private StateManager() {}
 
   public static StateManager getInstance() {
+    if (instance == null) {
+      instance = new StateManager();
+    }
     return instance;
   }
 

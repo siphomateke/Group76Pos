@@ -10,9 +10,14 @@ public class BankAccountManager implements IMemento {
 
   ArrayList<BankAccount> bankAccounts;
 
-  private BankAccountManager() {}
+  private BankAccountManager() {
+    this.bankAccounts = new ArrayList<>();
+  }
 
   public static BankAccountManager getInstance() {
+    if (instance == null) {
+      instance = new BankAccountManager();
+    }
     return instance;
   }
 

@@ -21,6 +21,9 @@ public class StockManager implements IMemento {
   }
 
   public static StockManager getInstance() {
+    if (instance == null) {
+      instance = new StockManager();
+    }
     return instance;
   }
 

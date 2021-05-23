@@ -9,9 +9,14 @@ public class SalesManager implements IMemento {
   public static SalesManager instance;
   ArrayList<Sale> sales;
 
-  private SalesManager() {}
+  private SalesManager() {
+    this.sales = new ArrayList<>();
+  }
 
   public static SalesManager getInstance() {
+    if (instance == null) {
+      instance = new SalesManager();
+    }
     return instance;
   }
 
