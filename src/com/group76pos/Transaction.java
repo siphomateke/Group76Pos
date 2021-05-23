@@ -13,4 +13,11 @@ public class Transaction {
     this.amount = amount;
     this.quantity = quantity;
   }
+
+  @Override
+  public String toString() {
+    return product.description +
+            ", " + amount +
+            ", " + quantity;
+  }
 }

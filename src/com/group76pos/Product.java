@@ -22,4 +22,9 @@ public class Product {
 
     StockManager.getInstance().checkReorderLevels(this);
   }
+
+  @Override
+  public String toString() {
+    return description;
+  }
 }
