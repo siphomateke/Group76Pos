@@ -116,14 +116,14 @@ public class SalesManager implements IMemento {
       String headerRow = String.join(",", new String[]{
         "Customer", "Product", "Price", "Quantity", "Total", "Time"
       });
-      String csvString = headerRow;
+      StringBuilder csvString = new StringBuilder(headerRow);
       for (ReportRow r : filteredRows) {
-        csvString += "\n" + r.toString();
+        csvString.append("\n").append(r.toString());
       }
       try {
         File file = new File(path);
         FileWriter writer = new FileWriter(file);
-        writer.write(csvString);
+        writer.write(csvString.toString());
         writer.close();
 
         if (file.exists()) {
@@ -207,7 +207,7 @@ public class SalesManager implements IMemento {
   }
 
   public String issueReceipt(Sale sale) {
-    String output = "\n*************************************************\n             Group76 POS Systems";
+    StringBuilder output = new StringBuilder("\n*************************************************\n             Group76 POS Systems");
     int maxNameLength = 0;
     int maxQuantityLength = 0;
     int maxAmountLength = 0;
@@ -225,15 +225,15 @@ public class SalesManager implements IMemento {
       }
     }
     String columnFormat = "\n%-"+(maxNameLength+3)+"s %-"+(maxQuantityLength+8)+"s %-"+(maxAmountLength+5)+"s";
-    output += "\n*************************************************";
-    output += String.format(columnFormat, "Products", "Quantity", "Amount");
-    output += "\n-------------------------------------------------";
+    output.append("\n*************************************************");
+    output.append(String.format(columnFormat, "Products", "Quantity", "Amount"));
+    output.append("\n-------------------------------------------------");
     for (Transaction transaction: sale.transactions){
-      output += String.format(columnFormat, transaction.product, transaction.quantity, "N$"+transaction.amount);
+      output.append(String.format(columnFormat, transaction.product, transaction.quantity, "N$" + transaction.amount));
     }
-    output += String.format("\n*************************************************\nTotal Amount:                N$"+sale.total+"\n");
-    output += "*************************************************";
-    return output;
+    output.append("\n*************************************************\nTotal Amount:                N$").append(sale.total).append("\n");
+    output.append("*************************************************");
+    return output.toString();
   }
 
   private class SavedTransaction extends Transaction {
@@ -258,7 +258,6 @@ public class SalesManager implements IMemento {
 
   /**
    * Converts sales into a format ready for saving to disk. Notably converts products into just product IDs.
-   * @return
    */
   @Override
   public Memento save() {
