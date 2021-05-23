@@ -7,5 +7,7 @@ public class Customer {
     this.name = name;
     this.phoneNumber = phoneNumber;
     this.email = email;
+    new Customer("Justin Brandt", "0812345678", "justinb@email.com");
+    new Customer(Craig Van Niekerk)
   }
 }
