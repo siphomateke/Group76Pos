@@ -6,9 +6,10 @@ public class BankAccount {
   double balance = 0;
   short pin;
 
-  BankAccount(Customer customer, String accountNumber, short pin) {
+  BankAccount(Customer customer, String accountNumber, double balance, short pin) {
     this.customer = customer;
     this.accountNumber = accountNumber;
+    this.balance = balance;
     this.pin = pin;
   }
 
