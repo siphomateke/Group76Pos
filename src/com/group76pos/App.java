@@ -9,6 +9,8 @@ public class App extends JFrame {
     private JButton reportsButton;
     private JButton cancelButton;
     private JButton checkoutButton;
+    private JList listOrder;
+    private JLabel totalAmountLabel;
 
     public App(String title) {
         super(title);
