@@ -3,6 +3,8 @@ package com.group76pos;
 import com.google.gson.Gson;
 
 import javax.swing.*;
+import java.awt.*;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,66 +53,74 @@ public class SalesManager implements IMemento {
   }
 
   public void generateReport(int month, ReportGroupBy groupBy) {
-    // FIXME: Filter by month
-
-    String path = "Report-"+groupBy.toString()+".csv";
-    ArrayList<ReportRow> reportRow = new ArrayList<>();
-    switch (groupBy) {
-      case Product: {
-        for (Sale s : this.sales) {
-          for (Transaction t : s.transactions) {
-            reportRow.add(new ReportRow(s.customer, t));
-          }
-        }
-        reportRow.sort(Comparator.comparingInt(r -> r.transaction.product.id));
-        break;
-      }
-      case Customer: {
-        ArrayList<Sale> sortedSales = new ArrayList<>(this.sales);
-        // FIXME: Make sure this works
-        sortedSales.sort(Comparator.comparing(s -> s.customer.name));
-        for (Sale s : sortedSales) {
-          for (Transaction t : s.transactions) {
-            reportRow.add(new ReportRow(s.customer, t));
-          }
-        }
-        break;
-      }
-      case Transfer: {
-        // group transactions by sales
-        for (Sale s : this.sales) {
-          for (Transaction t : s.transactions) {
-            reportRow.add(new ReportRow(s.customer, t));
-          }
-        }
-        break;
-      }
-      default:
-        // group by date
-        for (Sale s : this.sales) {
-          for (Transaction t : s.transactions) {
-            reportRow.add(new ReportRow(s.customer, t));
-          }
-        }
-        reportRow.sort(Comparator.comparing(r -> r.transaction.time));
-        break;
-    }
-
-    String headerRow = String.join(",", new String[]{
-      "Customer", "Product", "Price", "Quantity", "Total", "Time"
-    });
-    String csvString = headerRow;
-    for (ReportRow r: reportRow) {
-      csvString += "\n"+r.toString();
-    }
     try {
-      FileWriter writer = new FileWriter(path);
-      writer.write(csvString);
-      writer.close();
+      // FIXME: Filter by month
 
-      JOptionPane.showMessageDialog(null, String.format("Successfully saved %s report to %s", groupBy, path), "Success", JOptionPane.INFORMATION_MESSAGE);
-    } catch (IOException e) {
-      JOptionPane.showMessageDialog(null, e.getMessage(), "Failed to save report", JOptionPane.ERROR_MESSAGE);
+      String path = "Report-" + groupBy.toString() + ".csv";
+      ArrayList<ReportRow> reportRow = new ArrayList<>();
+      switch (groupBy) {
+        case Product: {
+          for (Sale s : this.sales) {
+            for (Transaction t : s.transactions) {
+              reportRow.add(new ReportRow(s.customer, t));
+            }
+          }
+          reportRow.sort(Comparator.comparingInt(r -> r.transaction.product.id));
+          break;
+        }
+        case Customer: {
+          ArrayList<Sale> sortedSales = new ArrayList<>(this.sales);
+          // FIXME: Make sure this works
+          sortedSales.sort(Comparator.comparing(s -> s.customer.name));
+          for (Sale s : sortedSales) {
+            for (Transaction t : s.transactions) {
+              reportRow.add(new ReportRow(s.customer, t));
+            }
+          }
+          break;
+        }
+        case Transfer: {
+          // group transactions by sales
+          for (Sale s : this.sales) {
+            for (Transaction t : s.transactions) {
+              reportRow.add(new ReportRow(s.customer, t));
+            }
+          }
+          break;
+        }
+        default:
+          // group by date
+          for (Sale s : this.sales) {
+            for (Transaction t : s.transactions) {
+              reportRow.add(new ReportRow(s.customer, t));
+            }
+          }
+          reportRow.sort(Comparator.comparing(r -> r.transaction.time));
+          break;
+      }
+
+      String headerRow = String.join(",", new String[]{
+              "Customer", "Product", "Price", "Quantity", "Total", "Time"
+      });
+      String csvString = headerRow;
+      for (ReportRow r : reportRow) {
+        csvString += "\n" + r.toString();
+      }
+      try {
+        File file = new File(path);
+        FileWriter writer = new FileWriter(file);
+        writer.write(csvString);
+        writer.close();
+
+        if (file.exists()) {
+          Desktop.getDesktop().open(file);
+        }
+        JOptionPane.showMessageDialog(null, String.format("Successfully saved %s report to %s", groupBy, path), "Success", JOptionPane.INFORMATION_MESSAGE);
+      } catch (IOException e) {
+        JOptionPane.showMessageDialog(null, e.getMessage(), "Failed to save report", JOptionPane.ERROR_MESSAGE);
+      }
+    } finally {
+      App.showPage("dashboard");
     }
   }
 
@@ -162,12 +172,14 @@ public class SalesManager implements IMemento {
 
             StateManager.getInstance().save();
           } else {
+            App.showPage("dashboard");
             throw new Exception("Insufficient funds");
           }
         } else {
           throw new Exception("Invalid PIN");
         }
       } else {
+        App.showPage("dashboard");
         throw new Exception(String.format("Bank Account %s not found", customerAccountNumber));
       }
     } catch (Exception e) {
