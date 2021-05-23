@@ -125,12 +125,9 @@ public class App extends JFrame {
                 transactionRow.add(quantityField);
 
                 JButton removeButton = new JButton("Remove");
-                removeButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                      activeSale.removeTransaction(transaction);
-                      updateCart();
-                    }
+                removeButton.addActionListener(e -> {
+                  activeSale.removeTransaction(transaction);
+                  updateCart();
                 });
                 transactionRow.add(removeButton);
 
@@ -200,52 +197,27 @@ public class App extends JFrame {
             }
         });
         
-        burgersButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                productFilter = 0;
-                populateProducts();
-            }
+        burgersButton.addActionListener(e -> {
+            productFilter = 0;
+            populateProducts();
         });
-        friesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                productFilter = 1;
-                populateProducts();
-            }
+        friesButton.addActionListener(e -> {
+            productFilter = 1;
+            populateProducts();
         });
-        drinksButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                productFilter = 2;
-                populateProducts();
-            }
+        drinksButton.addActionListener(e -> {
+            productFilter = 2;
+            populateProducts();
         });
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                activeSale.cancel();
-                updateCart();
-            }
+        cancelButton.addActionListener(e -> {
+            activeSale.cancel();
+            updateCart();
         });
-        checkoutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                activeSale.checkout();
-            }
-        });
-        reportsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showPage("reportGenerator");
-            }
-        });
-        menuButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                productFilter = -1;
-                populateProducts();
-            }
+        checkoutButton.addActionListener(e -> activeSale.checkout());
+        reportsButton.addActionListener(e -> showPage("reportGenerator"));
+        menuButton.addActionListener(e -> {
+            productFilter = -1;
+            populateProducts();
         });
     }
 
