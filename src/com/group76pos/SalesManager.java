@@ -172,8 +172,12 @@ public class SalesManager implements IMemento {
             // Reduce stock count of all products involved transaction by 1
             for (Transaction t : activeSale.transactions) {
               Product p = t.product;
-              p.updateStock(p.stockQuantity - 1);
+              p.updateStock(p.stockQuantity - t.quantity);
+              System.out.println(p.description + " = " + p.stockQuantity);
             }
+
+            // Deduct from customer's account
+            account.updateBalance(account.balance - activeSale.total);
 
             // Finally, store the successful sale for historical purposes
             this.addSale(activeSale);

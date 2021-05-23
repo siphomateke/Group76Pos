@@ -45,10 +45,13 @@ public class App extends JFrame {
         DefaultListModel foodListModel = new DefaultListModel();
         for (Product product: StockManager.getInstance().products) {
             if (
-                    this.productFilter == -1
-                    || (this.productFilter == 0 && product instanceof Burger)
-                    || (this.productFilter == 1 && product instanceof Fries)
-                    || (this.productFilter == 2 && product instanceof Drink)
+                    product.stockQuantity > 0
+                    && (
+                        this.productFilter == -1
+                        || (this.productFilter == 0 && product instanceof Burger)
+                        || (this.productFilter == 1 && product instanceof Fries)
+                        || (this.productFilter == 2 && product instanceof Drink)
+                    )
             ) {
                 foodListModel.addElement(product);
             }
@@ -92,23 +95,31 @@ public class App extends JFrame {
                         handleQuantityChange();
                     }
                     public void handleQuantityChange() {
-                        try {
-                            String text = quantityField.getText();
-                            if (text.length() > 0) {
-                                int quantity = Integer.parseInt(text);
-                                if (quantity <= 0) {
-                                    JOptionPane.showMessageDialog(null,
-                                            "Error: Please enter number bigger than 0", "Error Message",
-                                            JOptionPane.ERROR_MESSAGE);
-                                } else {
-                                    transaction.quantity = quantity;
-                                    label.setText("N$"+(transaction.amount * transaction.quantity));
-                                    updateTotal();
+                        Runnable doHighlight = new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    String text = quantityField.getText();
+                                    if (text.length() > 0) {
+                                        int quantity = Integer.parseInt(text);
+                                        if (quantity <= 0) {
+                                            JOptionPane.showMessageDialog(null,
+                                                    "Please enter number bigger than 0", "Error Message",
+                                                    JOptionPane.ERROR_MESSAGE);
+                                        } else if (quantity > transaction.product.stockQuantity) {
+                                            quantityField.setText(Integer.toString(transaction.product.stockQuantity));
+                                        } else {
+                                            transaction.quantity = quantity;
+                                            label.setText("N$"+(transaction.amount * transaction.quantity));
+                                            updateTotal();
+                                        }
+                                    }
+                                } catch (NumberFormatException e) {
+                                    quantityField.setText(Integer.toString(transaction.quantity));
                                 }
                             }
-                        } catch (NumberFormatException e) {
-                            quantityField.setText(Integer.toString(transaction.quantity));
-                        }
+                        };
+                        SwingUtilities.invokeLater(doHighlight);
                     }
                 });
                 transactionRow.add(quantityField);
@@ -152,6 +163,7 @@ public class App extends JFrame {
     public void clearSale() {
         activeSale = new Sale();
         updateCart();
+        populateProducts();
     }
 
     public static App getInstance() {
