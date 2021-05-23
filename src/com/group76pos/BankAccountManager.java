@@ -1,6 +1,8 @@
 package com.group76pos;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.google.gson.Gson;
 
 public class BankAccountManager implements IMemento {
@@ -33,6 +35,8 @@ public class BankAccountManager implements IMemento {
 
   @Override
   public void restore(Memento m) {
-    // TODO: Implement
+    Gson gson = new Gson();
+    BankAccount[] restoredAccounts = gson.fromJson(m.state, BankAccount[].class);
+    this.bankAccounts = new ArrayList<>(Arrays.asList(restoredAccounts));
   }
 }
