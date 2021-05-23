@@ -2,6 +2,7 @@ package com.group76pos;
 
 import com.google.gson.Gson;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -28,7 +29,7 @@ public class StockManager implements IMemento {
   }
 
   private void showAlert(String message) {
-    // TODO: Actually show alert in UI
+    JOptionPane.showMessageDialog(null, message, "Stock warning", JOptionPane.INFORMATION_MESSAGE);
   }
 
   public void checkReorderLevels(Product product) {
