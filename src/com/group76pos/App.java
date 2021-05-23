@@ -1,6 +1,11 @@
 package com.group76pos;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Date;
@@ -21,12 +26,13 @@ public class App extends JFrame {
     private JButton checkoutButton;
 
     // this should show the items that are added to the order/cart
-    private JList listOrder;
     private JLabel totalAmountLabel;
 
     // this should be able to change the items dynamically based on the food buttons
     private JList<String> foodList;
     private JButton menuButton;
+    private JScrollPane cartScrollPane;
+    private JPanel cartPanel;
 
     private int productFilter = -1;
     private Sale activeSale;
@@ -46,16 +52,80 @@ public class App extends JFrame {
         this.foodList.setModel(foodListModel);
     }
 
+    private void updateTotal() {
+        this.activeSale.total = this.activeSale.calculateTotal();
+        this.totalAmountLabel.setText("N$" + this.activeSale.total);
+    }
+
     private void updateCart() {
+        cartPanel.removeAll();
         if (activeSale != null) {
-            DefaultListModel listOrderModel = new DefaultListModel();
             for (Transaction transaction : activeSale.transactions) {
-                listOrderModel.addElement(transaction);
+                JPanel transactionRow = new JPanel();
+                GridLayout layout = new GridLayout();
+                layout.setHgap(3);
+                transactionRow.setLayout(layout);
+
+                transactionRow.add(new JLabel(transaction.product.description));
+                JLabel label = new JLabel();
+                label.setText("N$"+(transaction.amount * transaction.quantity));
+                transactionRow.add(label);
+
+                JTextField quantityField = new JTextField();
+                quantityField.setText(Integer.toString(transaction.quantity));
+                // Handle updating transaction quantity
+                quantityField.getDocument().addDocumentListener(new DocumentListener() {
+                    @Override
+                    public void insertUpdate(DocumentEvent documentEvent) {
+                        handleQuantityChange();
+                    }
+                    @Override
+                    public void removeUpdate(DocumentEvent documentEvent) {
+                        handleQuantityChange();
+                    }
+                    @Override
+                    public void changedUpdate(DocumentEvent e) {
+                        handleQuantityChange();
+                    }
+                    public void handleQuantityChange() {
+                        try {
+                            String text = quantityField.getText();
+                            if (text.length() > 0) {
+                                int quantity = Integer.parseInt(text);
+                                System.out.println("Quantity: "+quantity);
+                                if (quantity <= 0) {
+                                    JOptionPane.showMessageDialog(null,
+                                            "Error: Please enter number bigger than 0", "Error Message",
+                                            JOptionPane.ERROR_MESSAGE);
+                                } else {
+                                    transaction.quantity = quantity;
+                                    label.setText("N$"+(transaction.amount * transaction.quantity));
+                                    updateTotal();
+                                }
+                            }
+                        } catch (NumberFormatException e) {
+                            quantityField.setText(Integer.toString(transaction.quantity));
+                        }
+                    }
+                });
+                transactionRow.add(quantityField);
+
+                JButton removeButton = new JButton("Remove");
+                removeButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                      activeSale.removeTransaction(transaction);
+                      updateCart();
+                    }
+                });
+                transactionRow.add(removeButton);
+
+                cartPanel.add(transactionRow, BorderLayout.NORTH);
             }
-            listOrder.setModel(listOrderModel);
         }
-        activeSale.total = activeSale.calculateTotal();
-        this.totalAmountLabel.setText("N$" + activeSale.total);
+        cartPanel.revalidate();
+        cartPanel.repaint();
+        this.updateTotal();
 
         // FIXME: Remove test receipt printing
         System.out.println(SalesManager.getInstance().issueReceipt(activeSale));
@@ -70,7 +140,7 @@ public class App extends JFrame {
             }
         }
         if (existingTransaction == null) {
-            Transaction transaction = new Transaction(product, new Date(), product.sellingPrice, 0);
+            Transaction transaction = new Transaction(product, new Date(), product.sellingPrice, 1);
             this.activeSale.addTransaction(transaction);
         } else {
             // If the product is already in the cart, just increment the quantity
@@ -88,6 +158,7 @@ public class App extends JFrame {
         // FIXME: Load from disk before doing anything
 
         activeSale = new Sale();
+        cartPanel.setLayout(new BoxLayout(cartPanel, BoxLayout.PAGE_AXIS));
         this.populateProducts();
 
         foodList.addMouseListener(new MouseAdapter() {
@@ -99,40 +170,37 @@ public class App extends JFrame {
             }
         });
         
-        burgersButton.addMouseListener(new MouseAdapter() {
+        burgersButton.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+            public void actionPerformed(ActionEvent e) {
                 productFilter = 0;
                 populateProducts();
             }
         });
-        friesButton.addMouseListener(new MouseAdapter() {
+        friesButton.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+            public void actionPerformed(ActionEvent e) {
                 productFilter = 1;
                 populateProducts();
             }
         });
-        drinksButton.addMouseListener(new MouseAdapter() {
+        drinksButton.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+            public void actionPerformed(ActionEvent e) {
                 productFilter = 2;
                 populateProducts();
             }
         });
-        cancelButton.addMouseListener(new MouseAdapter() {
+        cancelButton.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+            public void actionPerformed(ActionEvent e) {
+                activeSale.cancel();
+                updateCart();
             }
         });
-        checkoutButton.addMouseListener(new MouseAdapter() {
+        checkoutButton.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+            public void actionPerformed(ActionEvent e) {
                 try {
                     activeSale.checkout();
                 } catch (Exception exception) {
@@ -140,17 +208,15 @@ public class App extends JFrame {
                 }
             }
         });
-        reportsButton.addMouseListener(new MouseAdapter() {
+        reportsButton.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+            public void actionPerformed(ActionEvent e) {
                 activeSale.cancel();
             }
         });
-        menuButton.addMouseListener(new MouseAdapter() {
+        menuButton.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+            public void actionPerformed(ActionEvent e) {
                 productFilter = -1;
                 populateProducts();
             }
