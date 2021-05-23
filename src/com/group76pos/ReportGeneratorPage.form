@@ -213,12 +213,4 @@
       </hspacer>
     </children>
   </grid>
-  <buttonGroups>
-    <group name="buttonGroup1">
-      <member id="e1254"/>
-      <member id="c64d7"/>
-      <member id="ed741"/>
-      <member id="5acdc"/>
-    </group>
-  </buttonGroups>
 </form>

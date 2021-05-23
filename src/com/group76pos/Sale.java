@@ -7,6 +7,7 @@ public class Sale {
   ArrayList<Transaction> transactions;
   double total;
   Date timeCompleted;
+  Customer customer;
 
   Sale() {
     this.transactions = new ArrayList<>();
