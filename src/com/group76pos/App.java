@@ -3,9 +3,12 @@ import javax.swing.*;
 
 public class App extends JFrame {
     private JPanel mainPanel;
-    private JTextField accNumTextField;
-    private JLabel accNumLabel;
-    private JButton accNumOKButton;
+    private JButton burgersButton;
+    private JButton friesButton;
+    private JButton drinksButton;
+    private JButton reportsButton;
+    private JButton cancelButton;
+    private JButton checkoutButton;
 
     public App(String title) {
         super(title);
