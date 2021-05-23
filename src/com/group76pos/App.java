@@ -26,6 +26,7 @@ public class App extends JFrame {
 
     // this should be able to change the items dynamically based on the food buttons
     private JList<String> foodList;
+    private JButton menuButton;
 
     private int productFilter = -1;
     private Sale activeSale;
@@ -135,6 +136,12 @@ public class App extends JFrame {
             }
         });
         reportsButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+            }
+        });
+        menuButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
