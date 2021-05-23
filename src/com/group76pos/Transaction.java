@@ -1,3 +1,4 @@
+package com.group76pos;
 import java.util.Date;
 
 public class Transaction {
