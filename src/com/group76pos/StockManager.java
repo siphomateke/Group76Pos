@@ -2,7 +2,7 @@ package com.group76pos;
 
 import java.util.ArrayList;
 
-public class StockManager {
+public class StockManager implements IMemento {
   public static StockManager instance;
   ArrayList<Product> products;
 
@@ -13,13 +13,13 @@ public class StockManager {
   }
 
   private void showAlert(String message) {
-    // TODO: Auto-generated method stub
-    return null;
+    // TODO: Actually show alert in UI
   }
 
   public void checkReorderLevels(Product product) {
-    // TODO: Auto-generated method stub
-    return null;
+    if (product.stockQuantity < product.reorderLevel) {
+      this.showAlert(String.format("%s are running low %d / %d", product.description, product.stockQuantity, product.reorderLevel));
+    }
   }
 
   @Override
@@ -31,6 +31,5 @@ public class StockManager {
   @Override
   public void restore(Memento m) {
     // TODO: Auto-generated method stub
-
   }
 }

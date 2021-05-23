@@ -25,10 +25,33 @@ public class Sale {
     this.transactions = new ArrayList<>();
   }
 
-  public void checkout() {
-    this.timeCompleted = new Date(System.currentTimeMillis());
+  public void checkout() throws Exception {
+    this.total = this.calculateTotal();
 
-    // TODO: Implement
+    // FIXME: Get account number and PIN
+    String customerAccountNumber = "";
+    short customerPin = 1234;
+
+    // Make sure the customer's PIN is valid
+    BankAccount account = BankAccountManager.getInstance().getBankAccount(customerAccountNumber);
+    boolean validPin = account.verifyPin(customerPin);
+    if (validPin) {
+      // Make sure they have a sufficient balance
+      if (account.balance >= this.total) {
+        // Checkout has been approved
+        this.timeCompleted = new Date(System.currentTimeMillis());
+
+        // Reduce stock count of all products involved transaction by 1
+        for (Transaction t: transactions) {
+          Product p = t.product;
+          p.updateStock(p.stockQuantity - 1);
+        }
+      } else {
+        throw new Exception("Insufficient funds");
+      }
+    } else {
+      throw new Exception("Invalid PIN");
+    }
   }
 
   public void removeTransaction(Transaction t) {

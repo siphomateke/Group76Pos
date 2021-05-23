@@ -19,5 +19,7 @@ public class Product {
 
   public void updateStock(int quantity) {
     this.stockQuantity = quantity;
+
+    StockManager.getInstance().checkReorderLevels(this);
   }
 }
