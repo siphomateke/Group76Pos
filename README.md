@@ -18,6 +18,16 @@ Alternatively, run the following in a terminal:
 java -jar ./PointOfSaleSystem.jar
 ```
 
+## Usage
+
+There are currently only 3 bank accounts hard-coded into the system that can be used just to demonstrate the functionality:
+
+| Account Number | PIN  | Balance |
+| -------------- | ---- | ------- |
+| 220040869      | 2001 | 10000   |
+| 219002444      | 2000 | 60      |
+| 220101361      | 2000 | 800     |
+
 ## Development
 
 You can also open this project in a IntelliJ IDEA and run the project by creating a Run configuration that targets the Java 11 SDK and uses `com.group76pos.App` as the main class. 
