@@ -27,17 +27,25 @@ public class App extends JFrame {
     // this should be able to change the items dynamically based on the food buttons
     private JList<String> foodList;
 
+    private int productFilter = -1;
     private Sale activeSale;
 
     private void populateProducts() {
         DefaultListModel foodListModel = new DefaultListModel();
         for (Product product: StockManager.getInstance().products) {
-            foodListModel.addElement(product);
+            if (
+                    this.productFilter == -1
+                    || (this.productFilter == 0 && product instanceof Burger)
+                    || (this.productFilter == 1 && product instanceof Fries)
+                    || (this.productFilter == 2 && product instanceof Drink)
+            ) {
+                foodListModel.addElement(product);
+            }
         }
         this.foodList.setModel(foodListModel);
     }
 
-    private void populateCart() {
+    private void updateCart() {
         if (activeSale != null) {
             DefaultListModel listOrderModel = new DefaultListModel();
             for (Transaction transaction : activeSale.transactions) {
@@ -45,6 +53,8 @@ public class App extends JFrame {
             }
             listOrder.setModel(listOrderModel);
         }
+        activeSale.total = activeSale.calculateTotal();
+        this.totalAmountLabel.setText("N$" + activeSale.total);
 
         // FIXME: Remove test receipt printing
         System.out.println(SalesManager.getInstance().issueReceipt(activeSale));
@@ -59,13 +69,13 @@ public class App extends JFrame {
             }
         }
         if (existingTransaction == null) {
-            Transaction transaction = new Transaction(product, new Date(), 0, 0);
+            Transaction transaction = new Transaction(product, new Date(), product.sellingPrice, 0);
             this.activeSale.addTransaction(transaction);
         } else {
             // If the product is already in the cart, just increment the quantity
             existingTransaction.quantity++;
         }
-        this.populateCart();
+        this.updateCart();
     }
 
     public App(String title) {
@@ -92,18 +102,24 @@ public class App extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                productFilter = 0;
+                populateProducts();
             }
         });
         friesButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                productFilter = 1;
+                populateProducts();
             }
         });
         drinksButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                productFilter = 2;
+                populateProducts();
             }
         });
         cancelButton.addMouseListener(new MouseAdapter() {

@@ -16,7 +16,7 @@ public class Sale {
   public double calculateTotal() {
     double total = 0;
     for (Transaction t: this.transactions) {
-      total += t.amount;
+      total += t.quantity * t.amount;
     }
     return total;
   }
